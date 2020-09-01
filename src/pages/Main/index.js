@@ -14,6 +14,7 @@ import MobileMenu from '../../components/MobileMenu';
  * Pages
  */
 import Dashboard from '../Dashboard';
+import EditPage from '../edit-page';
 import Components from '../Components';
 import UserProfile from '../UserProfile';
 import MapsPage from '../MapsPage';
@@ -43,6 +44,7 @@ const Main = ({
         <div className="main-panel">
           <Header />
           <Route exact path="/" component={Dashboard} />
+          <Route path="/edit-page" component={EditPage} />
           <Route path="/components" component={Components} />
           <Route path="/profile" component={UserProfile} />
           <Route path="/forms" component={Forms} />
