@@ -1,0 +1,49 @@
+.img-container {
+    padding:1em;
+    float:left;
+    & label {
+        &.control-label {
+            color: #180606 !important;
+        }
+    }
+    
+    & table {
+        border-radius: .5em;
+        border-collapse: separate !important;
+        border: .1em solid lightgrey;
+        background-color: white;
+        & tr {
+            & td {
+                & p {
+                    margin: 0 0 0;
+                    padding-left: .5em;
+                    color: #1b0a2a !important;
+                }
+                
+                
+            }
+        }
+    }
+}
+.container-img{
+    width:10em;
+    height:10em;
+    max-width: 10em;
+    max-height: 10em;
+    border-radius: .5em;
+}
+// .form-group label,
+//   fieldset label {
+//     font-size: 12px;
+//     line-height: 18px;
+//     font-weight: 300;
+//     &.control-label {
+//       color: #5f2525;
+//       text-transform: uppercase;
+//     }
+//     &.error {
+//       text-transform: none;
+//       color: #FB404B;
+//       margin-top: 5px;
+//     }
+//   }
