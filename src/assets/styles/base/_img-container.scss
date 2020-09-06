@@ -12,15 +12,15 @@
         border-collapse: separate !important;
         border: .1em solid lightgrey;
         background-color: white;
+        cursor: pointer;
         & tr {
             & td {
+                max-width: 10em;
                 & p {
                     margin: 0 0 0;
                     padding-left: .5em;
                     color: #1b0a2a !important;
                 }
-                
-                
             }
         }
     }

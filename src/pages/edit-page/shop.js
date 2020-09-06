@@ -1,18 +1,38 @@
 
-import React, { Component } from 'react';
+import React, {useState, useEffect } from 'react';
 import renderField from '../../components/FormInputs/renderField';
 import { Field,reduxForm } from 'redux-form';
-import ContentLoader from 'react-content-loader'
 import {GetProducts} from '../../api/product'
 import {Product} from '../Components/Product'
 
 
 export const ShopPage = () => {
-
+    const [searchResults,setSearchResults] = useState([]);
+    const [productsOnDisplay, setProductsOnDisplay] = useState([]);
+    const onSearchFieldChanged = (e) =>{
+        GetProducts().then((res)=>{
+          if(res.data.dataList!=null){
+            setSearchResults(res.data.dataList);
+          }
+        })
+      }
+      const setProductCategory = (product) => {
+        if(!productsOnDisplay.some(el=> el.productId === product.productId)){
+          setProductsOnDisplay([...productsOnDisplay,product]);
+        }
+        
+      }
+      useEffect(()=>{
+        GetProducts().then((res)=>{
+          if(res.data.dataList!=null){
+            setProductsOnDisplay(res.data.dataList);
+          }
+        })
+      },[])
     return (
       <div className="card">
     <div className="header">
-      <h4>Form Elements</h4>
+      <h4>Top Section</h4>
     </div>
     <div className="content">
       <form className="form-horizontal">
@@ -22,157 +42,53 @@ export const ShopPage = () => {
             <Field
               name="withHelp"
               type="text"
+              onChange={onSearchFieldChanged}
               component={renderField}
               helpText="Search products by entering a name" />
           </div>
         </div>
         
         <div className="form-group">
+        <label className="col-md-3">Search Results:</label>
           <div className="card-panel">
-            <Product ProductName="Test" Url="https://image.shutterstock.com/image-vector/vector-ring-600w-618689747.jpg" />
+          <div onClick={() => setProductCategory({productId:6,productName:"Product"})}>
+                  <Product ProductName={"Product"} Url="https://image.shutterstock.com/image-vector/vector-ring-600w-618689747.jpg" />
+          </div>
+            {
+              searchResults && ( searchResults.map(product => {
+                return (<div onClick={() => setProductCategory(product)}>
+                  <Product ProductName={product.productName} Url="https://image.shutterstock.com/image-vector/vector-ring-600w-618689747.jpg" />
+                  </div>)
+              }))
+            }
+            {!searchResults && (
+              <div className="col-lg-12"style={{textAlign:"center",verticalAlign:"middle"}}><a>Use search to list products here!</a></div>
+            )}
           </div>
         </div>
-
+        <button type="button" className="btn btn-rectangle btn-fill btn-wd btn-info" style={{float:"right"}}>
+          <span className="btn-label">
+          <i className="fa fa-save"></i>
+          </span> Save
+        </button>
+        <br/>
         <div className="form-group">
-          <label className="control-label col-md-3">Placeholder</label>
-          <div className="col-md-9">
-            <Field
-              name="placeholder"
-              type="text"
-              placeholder="placeholder"
-              component={renderField} />
+        <label className="col-md-3">Products on display:</label>
+          <div className="card-panel">
+            {
+              productsOnDisplay && ( productsOnDisplay.map(product => {
+                return (<div onClick={() => setProductCategory(product)}>
+                  <Product ProductName={product.productName} Url="https://image.shutterstock.com/image-vector/vector-ring-600w-618689747.jpg" />
+                  </div>)
+              }))
+            }
+            {!productsOnDisplay && (
+              <div className="col-lg-12"style={{textAlign:"center",verticalAlign:"middle"}}><a>Use search to list products here!</a></div>
+            )}
           </div>
         </div>
 
-        <div className="form-group">
-          <label className="control-label col-md-3">Disabled</label>
-          <div className="col-md-9">
-            <Field
-              name="disabled"
-              type="text"
-              placeholder="This input is disabled"
-              disabled={true}
-              component={renderField} />
-          </div>
-        </div>
-
-        <div className="form-group">
-          <label className="control-label col-md-3">Checkboxes and radios</label>
-          <div className="col-md-9 checkbox-group">
-            <Field
-              name="checkbox1"
-              type="checkbox"
-              label="First Checkbox"
-              component={renderField} />
-
-            <Field
-              name="checkbox2"
-              type="checkbox"
-              label="Second Checkbox"
-              component={renderField} />
-
-            <Field
-              name="radioGroup"
-              type="radio"
-              label="Male"
-              value="male"
-              component={renderField} />
-
-            <Field
-              name="radioGroup"
-              type="radio"
-              label="Female"
-              value="female"
-              component={renderField} />
-          </div>
-        </div>
-
-        <div className="form-group">
-          <label className="control-label col-md-3">Inline checkboxs</label>
-          <div className="col-md-9 checkbox-group">
-            <Field
-              name="a"
-              type="checkbox"
-              label="a"
-              component={renderField} />
-            <Field
-              name="b"
-              type="checkbox"
-              label="b"
-              component={renderField} />
-            <Field
-              name="c"
-              type="checkbox"
-              label="c"
-              component={renderField} />
-          </div>
-        </div>
-
-        <fieldset>
-          <legend>Input variants</legend>
-          <label className="col-sm-2 control-label">Custom Checkboxes & radios</label>
-          <div className="col-sm-4 col-sm-offset-1 checkbox-group">
-            <Field
-              name="unchecked"
-              type="checkbox"
-              label="Unchecked"
-              component={renderField} />
-
-            <Field
-              name="checked"
-              type="checkbox"
-              label="Checked"
-              component={renderField} />
-
-            <Field
-              name="disabledUnchecked"
-              type="checkbox"
-              label="Disabled Unchecked"
-              disabled
-              component={renderField} />
-
-            <Field
-              name="disabledChecked"
-              type="checkbox"
-              label="Disabled Checked"
-              disabled
-              component={renderField} />
-          </div>
-
-          <div className="col-sm-5 radio-group">
-            <Field
-              name="radioOnOff"
-              type="radio"
-              label="Radio is off"
-              value="off"
-              component={renderField} />
-
-            <Field
-              name="radioOnOff"
-              type="radio"
-              label="Radio is on"
-              value="on"
-              component={renderField} />
-
-            <Field
-              name="radioDisabledOnOff"
-              type="radio"
-              label="Disabled Unchecked"
-              value="off"
-              disabled
-              component={renderField} />
-
-            <Field
-              name="radioDisabledOnOff"
-              type="radio"
-              label="Disabled Checked"
-              value="on"
-              disabled
-              component={renderField} />
-
-          </div>
-        </fieldset>
-      </form>
+        </form>
     </div>
   </div>
   )

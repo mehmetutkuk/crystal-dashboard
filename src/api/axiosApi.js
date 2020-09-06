@@ -1,9 +1,11 @@
 import axios from 'axios';
 import LocalStorageService from "./localStorage";
 
-const apiUrl = "https://localhost:32768/api/";
+const apiUrl = "https://localhost:32771/api/";
 const localStorageService = LocalStorageService.getService();   
 const headersPreset = {'Accept':'application/json'};
+const CancelToken = axios.CancelToken;
+let cancel;
 
 export const authInstance = axios.create({baseURL: apiUrl, headers: headersPreset });
 export const publicInstance = axios.create({baseURL: apiUrl, headers: headersPreset});
@@ -21,7 +23,20 @@ authInstance.interceptors.request.use(
         console.log(JSON.stringify(error));
         Promise.reject(error);
     });
-publicInstance.interceptors.request.use(
+publicInstance.interceptors.request.use((config) => {
+
+    if (cancel) {
+      cancel(); // cancel request
+    }
+  
+    config.cancelToken =  new CancelToken(function executor(c)
+      {
+        cancel = c;
+      })
+  
+    return config
+  
+  },
     error => {
         console.log(JSON.stringify(error));
         Promise.reject(error);
