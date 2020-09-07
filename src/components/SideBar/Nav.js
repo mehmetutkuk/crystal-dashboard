@@ -17,6 +17,31 @@ class Nav extends Component {
             <p>Dashboard</p>
           </Link>
         </li>
+        <li className={this.isPathActive('/edit-page') || this.state.editMenuOpen ? 'active' : null}>
+          <a onClick={() => this.setState({ editMenuOpen: !this.state.editMenuOpen })}
+            data-toggle="collapse">
+            <i className="pe-7s-plugin"></i>
+            <p>
+              Edit Pages
+            <b className="caret"></b>
+            </p>
+          </a>
+          <Collapse in={this.state.editMenuOpen}>
+            <div>
+              <ul className="nav">
+                <li className={this.isPathActive('/edit-page/home-page') ? 'active' : null}>
+                  <Link to="/edit-page/home-page">Home Page</Link>
+                </li>
+                <li className={this.isPathActive('/edit-page/shop') ? 'active' : null}>
+                  <Link to="/edit-page/shop">Shop</Link>
+                </li>
+                <li className={this.isPathActive('/edit-page/about-us') ? 'active' : null}>
+                  <Link to="/edit-page/about-us">About Us</Link>
+                </li>
+              </ul>
+            </div>
+          </Collapse>
+        </li>
         <li className={this.isPathActive('/components') || this.state.componentMenuOpen ? 'active' : null}>
           <a onClick={() => this.setState({ componentMenuOpen: !this.state.componentMenuOpen })}
             data-toggle="collapse">
