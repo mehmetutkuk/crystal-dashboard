@@ -22,17 +22,23 @@ import Forms from '../Forms';
 import Charts from '../Charts';
 import Calendar from '../Calendar';
 import Tables from '../Tables';
-
+import LoginPage from '../Components/Login'
 const Main = ({
   mobileNavVisibility,
   hideMobileMenu,
-  history
+  history,
+  user
 }) => {
   history.listen(() => {
     if (mobileNavVisibility === true) {
       hideMobileMenu();
     }
   });
+  if(!user.isLoggedIn){
+    return(
+      <LoginPage/>
+    )
+  }
   return (
     <div className={cx({
       'nav-open': mobileNavVisibility === true
@@ -40,7 +46,6 @@ const Main = ({
       <div className="wrapper">
         <div className="close-layer" onClick={hideMobileMenu}></div>
         <SideBar />
-
         <div className="main-panel">
           <Header />
           <Route exact path="/" component={Dashboard} />
@@ -60,7 +65,8 @@ const Main = ({
 };
 
 const mapStateToProp = state => ({
-  mobileNavVisibility: state.Layout.mobileNavVisibility
+  mobileNavVisibility: state.Layout.mobileNavVisibility,
+  user: state.Auth.user
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

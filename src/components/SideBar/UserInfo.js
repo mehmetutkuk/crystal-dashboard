@@ -15,10 +15,9 @@ class UserInfo extends Component {
     return (
       <div className="user-wrapper">
         <div className="user">
-          <img src={user.image} alt={user.name} className="photo" />
           <div className="userinfo">
             <div className="username">
-              {user.name}
+              {user.username}
             </div>
             <div className="title">Admin</div>
           </div>
