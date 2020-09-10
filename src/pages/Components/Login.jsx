@@ -1,16 +1,16 @@
-import React,{useState, useDispatch} from 'react';
-import {useSelector} from 'react-redux';
+import React,{useState} from 'react';
+import {useSelector,connect} from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Login } from '../../api/user'
 import { createBrowserHistory } from 'history';
+import { setLogin } from '../../reducers/Auth';
 
-export const LoginPage = ()=> {
+export const LoginPage = ({loginDispatch})=> {
     const [username,setUsername] = useState("")
     const [password,setPassword] = useState("")
     const [submitted,setSubmitted]=useState(false)
     const history = createBrowserHistory();
     const [loggingIn,setLoggingIn] = useState(false);
-    const dispatch = useDispatch();
     const onUsernameChanged = (e) =>{
         const {value} = e.target;
         setUsername(value);
@@ -28,6 +28,7 @@ export const LoginPage = ()=> {
             Login({Email:username,Password:password}).then((res) =>{
                 if(res.data.data.loggedIn)
                 {
+                    loginDispatch(res.data.data.token)
                     setLoggingIn(false);
                     history.push("/");
                 }
@@ -67,4 +68,14 @@ export const LoginPage = ()=> {
     );
 }
 
-export default LoginPage
+//export default LoginPage
+
+const mapStateToProp = state => ({
+    user: state.Auth.user
+  });
+  
+  const mapDispatchToProps = (dispatch, ownProps) => ({
+    loginDispatch: (token) => dispatch(setLogin(token))
+  });
+  
+  export default connect(mapStateToProp, mapDispatchToProps)(LoginPage);
